@@ -8,7 +8,7 @@ export const authMiddleware: ExpressParam = (req, res, next) => {
         throw new Error ("SEM TOKEN");
     }
 
-    const [type, token] = bearerToken.split (" ");
+    const [, token] = bearerToken.split (" ");
         const decoded = verifyToken (token);
 
         req.user = decoded;
