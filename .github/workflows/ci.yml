@@ -1,0 +1,38 @@
+name: CI-tests
+
+on:
+    pull_request:
+    push:
+
+jobs: 
+    test:
+        runs-on: ubuntu-latest
+    
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL_FOR_TESTS }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET}}
+            NODE_ENV: test
+        
+        steps: 
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with: 
+                node-version: 22
+                cache: npm
+            
+            
+            - name: Installing dependencies
+              run: npm ci
+
+            - name: Generating prisma schemas
+              run: npx prisma generate
+
+            - name: Making migration  
+              run: npx prisma migrate deploy
+
+            - name: Checking types  
+              run: npm run typecheck
+
+            - name: Running tests
+              run: npm run test:run 
