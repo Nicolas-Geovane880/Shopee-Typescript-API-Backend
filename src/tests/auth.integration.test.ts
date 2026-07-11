@@ -67,13 +67,10 @@ describe ("login", () => {
             .send (userLoginRequest);
 
         expect (response.status).toBe (200);
-        expect (response.body).toHaveProperty ("accessToken");
-        expect (response.body).toHaveProperty ("refreshToken");
-        expect (typeof response.body.accessToken).toBe ("object");
-        expect (typeof response.body.refreshToken).toBe ("object");
+        expect (response.body).toHaveProperty ("challengeId");
 
-        const savedRefreshToken = await prisma.refreshToken.findUnique ({where: {userId: existingUserResponse.body.id}});
+        const challengeId = await prisma.loginChallenge.findFirst ({ where: {userId: existingUserResponse.body.id}});
 
-        expect (savedRefreshToken).not.toBeNull ();
+        expect (challengeId).not.toBeNull ();
     })
-})
+});
