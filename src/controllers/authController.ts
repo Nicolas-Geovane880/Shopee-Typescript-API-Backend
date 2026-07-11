@@ -6,35 +6,42 @@ import { refreshToken } from "../services/tokenService.js";
 
 export const signup: ExpressParam = async (req, res, next) => {
     try {
-        const signupDto = userCreateSchema.parse (req.body);
-        const signupResponse = await authService.signup (signupDto);
+        const dto = userCreateSchema.parse (req.body);
+        const response = await authService.signup (dto);
 
-        res.status(201).json(signupResponse);
+        res.status(201).json(response);
     } catch (error) {
-        console.log (error);
-        next();
+        next (error);
     }
 }
 
 export const login: ExpressParam = async (req, res, next) => {
     try {
-        const loginDto = loginSchema.parse (req.body);
-        const loginResponse = await authService.login (loginDto);
+        const dto = loginSchema.parse (req.body);
+        const response = await authService.login (dto);
 
-        res.status(200).json(loginResponse);
+        res.status(200).json(response);
     } catch (error) {
-        console.log (error);
-        next();
+        next (error);
     }
 }
 
+export const validateCode: ExpressParam = async (req, res, next) => {
+    try {
+        const response = await authService.validateCode (req.body);
+
+        res.status(200).json(response);
+    } catch (error) {
+        next (error);
+    }
+} 
+
 export const refresh: ExpressParam = async (req, res, next) => {
     try {
-        const tokenResponse = await refreshToken (req.body.refreshToken);
+        const response = await refreshToken (req.body.refreshToken);
 
-        res.status(200).json(tokenResponse);
+        res.status(200).json(response);
     } catch (error) {
-        console.log (error);
-        next ();
+        next (error);
     }
 }

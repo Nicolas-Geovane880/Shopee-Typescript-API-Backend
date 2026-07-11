@@ -1,7 +1,18 @@
-#### PROJETO PARTE I
+#### PROJETO PARTE II
 
-O sistema de autenticação via JWT está funcionando perfeitamente, com sistema de rotação de refresh tokens apropriado.
+O Sistema de verificação via E-mail para confirmar login está funcionando.
 
-#### Novas funcionalidades para implementar
+- Ao fazer login, o access token não é fornecido de imediato. Para ter acesso ao token, é necessário informar o código que foi enviado para o email que tentou o login.
 
-- Sistema de verificação via código em E-mail para confirmar login.
+<code>
+{<br>
+    <span style="margin-left: 4ch;"></span>"challengeId: "ID_DA_TENTATIVA"<br>
+    <span style="margin-left: 4ch;"></span>"code": "CODIGO_VERIFICAO"<br>
+}
+</code>
+
+#### Novas mudanças futuras.
+
+- Adicionar o domínio de fato da aplicação (os produtos para criar os cálculos).
+
+
