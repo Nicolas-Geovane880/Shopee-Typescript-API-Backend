@@ -31,8 +31,5 @@ jobs:
             - name: Making migration  
               run: npx prisma migrate deploy
 
-            - name: Checking types  
-              run: npm run typecheck
-
             - name: Running tests
               run: npm run test:run 

@@ -1,11 +1,17 @@
 import bcrypt from "bcryptjs";
 import type { UserCreateSchema } from "../types/userSchema.js";
 import prisma from "../utils/prismaInstance.js";
+import { ConflictException } from "../exceptions/conflictException.js";
+import { ErrorMessage } from "../constants/errorMessage.js";
 
-export const saveUser = async (dto: UserCreateSchema) => {
+export const save = async (dto: UserCreateSchema) => {
+    const byEmail = await findByEmail (dto.email);
+
+    if (byEmail) throw new ConflictException (409, ErrorMessage.EMAIL_ALREADY_USED);
+
     const passwordHash = await bcrypt.hash (dto.password, 12);
 
-    const saved = await prisma.user.create ({
+    const user = await prisma.user.create ({
         data: {
             name: dto.name,
             email: dto.email,
@@ -14,9 +20,9 @@ export const saveUser = async (dto: UserCreateSchema) => {
     });
 
     return {
-        id: saved.id,
-        name: saved.name,
-        email: saved.email,
+        id: user.id,
+        name: user.name,
+        email: user.email,
         createdAt: new Date (),
     }
 }

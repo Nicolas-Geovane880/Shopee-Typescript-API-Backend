@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import type { AccessTokenResponseSchema, RefreshTokenResponseSchema } from "../types/tokenSchema.js";
 import type { LoginResponseSchema } from "../types/authSchema.js";
 import prisma from "../utils/prismaInstance.js";
+import { InvalidTokenException } from "../exceptions/invalidTokenException.js";
+import { ErrorMessage } from "../constants/errorMessage.js";
 
 export const generateTokens = async (userId: number) : Promise<LoginResponseSchema> => {
     const accessTokenResponse = generateAccessToken (userId);
@@ -43,7 +45,7 @@ export const verifyToken = (token: string) => {
     const decoded = jwt.verify (token, getJwtSecret());
 
     if (!decoded || decoded === null || typeof decoded !== "object" || !("id" in decoded)) {
-        throw new Error ("Invalid token.");
+        throw new InvalidTokenException (401, ErrorMessage.INVALID_TOKEN);
     }
 
     return {
