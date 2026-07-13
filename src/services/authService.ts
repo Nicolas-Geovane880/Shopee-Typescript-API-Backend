@@ -8,6 +8,7 @@ import prisma from "../utils/prismaInstance.js";
 import type { LoginChallenge } from "../types/prisma/loginChallengeSchema.js";
 import { InvalidLoginCodeException } from "../exceptions/invalidLoginCodeException.js";
 import { ErrorMessage } from "../constants/errorMessage.js";
+import { InvalidCredentialsException } from "../exceptions/invalidCredentials.js";
 
 export const signup = async (dto: UserCreateSchema) => {
     return await save (dto);
@@ -15,12 +16,10 @@ export const signup = async (dto: UserCreateSchema) => {
 
 export const login = async (dto: LoginSchema) => {
     const user = await findByEmail (dto.email);
-
-    if (!user) throw new Error ();
+    if (!user) throw new InvalidCredentialsException (400, ErrorMessage.INVALID_CREDENTIALS);
     
     const isPasswordValid = await bcrypt.compare (dto.password, user.passwordHash);
-
-    if (!isPasswordValid) throw new Error ();
+    if (!isPasswordValid) throw new InvalidCredentialsException (400, ErrorMessage.INVALID_CREDENTIALS);
 
     const code = generateCode ()
     const codeHash = await bcrypt.hash (code, 10);
@@ -48,7 +47,7 @@ export const validateCode = async (dto: {challengeId: string, code: string}) => 
         }
      });
 
-    await validateLoginChallenge (loginChallenge!, dto.code);
+    await validateLoginChallenge (loginChallenge, dto.code);
 
     await prisma.loginChallenge.update ({
         where: { id: loginChallenge!.id },
@@ -60,7 +59,7 @@ export const validateCode = async (dto: {challengeId: string, code: string}) => 
     return generateTokens (loginChallenge!.user.id);
 }
 
-const validateLoginChallenge = async (loginChallenge: LoginChallenge, code: string) => {
+const validateLoginChallenge = async (loginChallenge: LoginChallenge | null, code: string) => {
     if (!loginChallenge) {
         throw new InvalidLoginCodeException (400, ErrorMessage.INVALID_LOGIN_CODE);
     }

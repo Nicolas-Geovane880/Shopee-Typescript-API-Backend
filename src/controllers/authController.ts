@@ -1,5 +1,5 @@
 import * as authService from "../services/authService.js";
-import { loginSchema } from "../types/authSchema.js";
+import { loginSchema, validateCodeSchema } from "../types/authSchema.js";
 import type { ExpressParam } from "../types/express/expressParam.js";
 import { userCreateSchema } from "../types/userSchema.js";
 import { refreshToken } from "../services/tokenService.js";
@@ -28,7 +28,8 @@ export const login: ExpressParam = async (req, res, next) => {
 
 export const validateCode: ExpressParam = async (req, res, next) => {
     try {
-        const response = await authService.validateCode (req.body);
+        const dto = validateCodeSchema.parse (req.body);
+        const response = await authService.validateCode (dto);
 
         res.status(200).json(response);
     } catch (error) {

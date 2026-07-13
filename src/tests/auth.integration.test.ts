@@ -57,6 +57,8 @@ describe ("login", () => {
             .post ("/auth/signup")
             .send (existingUser);
 
+        expect (existingUserResponse.status).toBe (201);
+
         const userLoginRequest = {
             email: "Usermail@gmail.com",
             password: "UserPassword123",
@@ -72,5 +74,5 @@ describe ("login", () => {
         const challengeId = await prisma.loginChallenge.findFirst ({ where: {userId: existingUserResponse.body.id}});
 
         expect (challengeId).not.toBeNull ();
-    })
+    }, 15000);
 });

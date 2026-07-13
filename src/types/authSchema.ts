@@ -11,7 +11,11 @@ export const loginResponseSchema = z.object ({
     refreshToken: refreshTokenResponseSchema,
 });
 
-export type LoginResponseSchema = z.infer <typeof loginResponseSchema>;
+export const validateCodeSchema = z.object ({
+    challengeId: z.string (),
+    code: z.string (),
+})
 
+export type LoginResponseSchema = z.infer <typeof loginResponseSchema>;
 
 export type LoginSchema = z.infer <typeof loginSchema>;

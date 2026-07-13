@@ -3,40 +3,64 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                Int               @id @default(autoincrement())
-  name              String
-  email             String            @unique
-  passwordHash      String
+  id           Int    @id @default(autoincrement())
+  name         String
+  email        String @unique
+  passwordHash String
 
-  loginChallenges   LoginChallenge[]
-  refreshTokens     RefreshToken[]
+  loginChallenges LoginChallenge[]
+  refreshTokens   RefreshToken[]
+  orders          Order[]
 }
 
 model LoginChallenge {
-  id                String            @id @default(uuid())
-  userId            Int
-  codeHash          String
-  expiresAt         DateTime
-  attempts          Int               @default(0)
-  consumedAt        DateTime?
-  createdAt         DateTime          @default(now())
+  id         String    @id @default(uuid())
+  userId     Int
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
 
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([id])
 }
 
 model RefreshToken {
-  id                String            @id @default(uuid())
-  userId            Int               @unique
-  refreshTokenHash  String
-  expiresAt         DateTime
-  createdAt         DateTime          @default(now())
+  id               String   @id @default(uuid())
+  userId           Int      @unique
+  refreshTokenHash String
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
 
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id            String  @id @default(uuid())
+  sku           String
+  supplierPrice Int
+  quantity      Int
+  order         Order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       String?
+
+  @@index([id])
+}
+
+model Order {
+  id        String    @id @default(uuid())
+  id_seller String    @unique
+  userId    Int
+  revenue   Int?
+  products  Product[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([id])
 }
