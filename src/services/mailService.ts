@@ -7,8 +7,8 @@ dns.setDefaultResultOrder("ipv4first");
 export const createTransporter = () => {
   return nodemailer.createTransport ({
     host: process.env.SMTP_HOST,
-    port: 465,
-    secure: true,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -28,7 +28,7 @@ export const sendLoginCode = async (to: string, code: string) => {
     to: to,
     subject: "Seu código de verificação",
     html: `
-      <div style="font-family: Arial, sans-serif; background-color: #FA5A0A; padding: 10px; border-radius: 12px; margin-bottom: 20px"; color: white>
+      <div style="font-family: Arial, sans-serif; background-color: #0400e9; padding: 10px; border-radius: 5px; margin-bottom: 20px"; color: white>
         <h2>Shopee Supplier Calculator</h2>
         <p>Use o código abaixo para concluir seu login:</p>
       </div>
@@ -54,7 +54,7 @@ export const sendResetPasswordLink = async (to: string, token: string) => {
       to,
       subject: "Alterar senha",
       html: `
-        <div style="font-family: Arial, sans-serif; background-color: #FA5A0A; padding: 10px; border-radius: 5px; margin-bottom: 20px"; color: white>
+        <div style="font-family: Arial, sans-serif; background-color: #0400e9; padding: 10px; border-radius: 5px; margin-bottom: 20px"; color: white>
           <h2>Shopee Supplier Calculator</h2>
           <p>Foi solicitado uma alteração de senha por este E-mail:</p>
           <p>Use o link abaixo para alterar sua senha</p>
