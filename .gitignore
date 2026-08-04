@@ -3,3 +3,9 @@ node_modules
 .env
 
 /src/generated/prisma
+
+# Ignorar a pasta de build do TypeScript
+dist/
+build/
+out/
+

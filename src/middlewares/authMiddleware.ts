@@ -3,7 +3,7 @@ import { InvalidTokenException } from "../exceptions/invalidTokenException.js";
 import { verifyToken } from "../services/tokenService.js";
 import type { ExpressParam } from "../types/express/expressParam.js";
 
-export const authMiddleware: ExpressParam = (req, res, next) => {
+export const authMiddleware: ExpressParam = (req, _res, next) => {
     const bearerToken = req.headers.authorization;
 
     if (!bearerToken) {

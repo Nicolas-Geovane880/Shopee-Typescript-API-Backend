@@ -4,8 +4,6 @@ import app from "../app.js";
 import prisma from "../utils/prismaInstance.js";
 import { clearDatabase } from "../utils/clearDatabase.js";
 
-const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
-
 describe ("signup", () => {
     beforeEach (async () => {
         await clearDatabase ();
