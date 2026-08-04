@@ -1,5 +1,8 @@
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import dns from "dns";
+
+dns.setDefaultResultOrder("ipv4first");
 
 const createTransporter = () => {
   return nodemailer.createTransport ({
