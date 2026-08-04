@@ -22,8 +22,6 @@ export const login: ExpressParam = async (req, res, next) => {
         const dto = loginSchema.parse (req.body);
         const response = await authService.login (dto);
 
-        console.log (response);
-
         res.status(200).json(response);
     } catch (error) {
         next (error);

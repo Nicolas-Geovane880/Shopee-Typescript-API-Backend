@@ -59,8 +59,6 @@ describe ("login", () => {
             .post ("/auth/signup")
             .send (existingUser);
 
-        console.log (existingUserResponse);
-
         expect (existingUserResponse.status).toBe (201);
 
         const userLoginRequest = {
@@ -80,54 +78,3 @@ describe ("login", () => {
         expect (challengeId).not.toBeNull ();
     }, 15000);
 });
-
-// describe ("resendLoginCode", () => {
-//     beforeEach (async () => {
-//         await clearDatabase ();
-//     })
-
-//     afterAll (async () => {
-//         await prisma.$disconnect ();
-//     });
-
-//     it ("Should resend login code", async () => {
-//         const existingUser = {
-//             name: "User name test",
-//             email: "Usermail@gmail.com",
-//             password: "UserPassword123",
-//         };
-
-//         const existingUserResponse = await request (app)
-//             .post ("/auth/signup")
-//             .send (existingUser);
-
-//         expect (existingUserResponse.status).toBe (201);
-
-//         const userLoginRequest = {
-//             email: "Usermail@gmail.com",
-//             password: "UserPassword123",
-//         }
-
-//         const sentLoginCode = await request (app)
-//             .post ("/auth/login")
-//             .send (userLoginRequest);
-
-//         expect (sentLoginCode.status).toBe (200);
-//         expect (sentLoginCode.body).toHaveProperty ("challengeId");
-
-//         const challengeId = await prisma.loginChallenge.findFirst ({ where: {user_id: existingUserResponse.body.id}});
-
-//         expect (challengeId).not.toBeNull ();
-
-//         await sleep (62000)
-
-//         const resentLoginCode = await request (app)
-//             .post ("/auth/resend-code/" + sentLoginCode.body.challengeId);
-
-//         console.log (resentLoginCode.body);
-
-//         expect (resentLoginCode.status).toBe (200);
-//         expect (resentLoginCode.body).toHaveProperty ("challengeId");
-        
-//     }, 1000 * 70);
-// })
