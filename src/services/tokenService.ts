@@ -1,10 +1,10 @@
+import type { AccessTokenResponseSchema, RefreshTokenResponseSchema } from "../types/tokenSchema.js";
+import { InvalidTokenException } from "../exceptions/invalidTokenException.js";
+import type { LoginResponseSchema } from "../types/authSchema.js";
+import { ErrorMessage } from "../constants/errorMessage.js";
+import prisma from "../utils/prismaInstance.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import type { AccessTokenResponseSchema, RefreshTokenResponseSchema } from "../types/tokenSchema.js";
-import type { LoginResponseSchema } from "../types/authSchema.js";
-import prisma from "../utils/prismaInstance.js";
-import { InvalidTokenException } from "../exceptions/invalidTokenException.js";
-import { ErrorMessage } from "../constants/errorMessage.js";
 
 export const generateTokens = async (userId: number) : Promise<LoginResponseSchema> => {
     const accessTokenResponse = generateAccessToken (userId);
@@ -61,16 +61,18 @@ export const refreshToken = async (refreshToken: string) : Promise<LoginResponse
     await deleteRefreshTokensByUserId (decoded.userId);
 
     return generateTokens (decoded.userId);
-}
+} 
 
 const saveRefreshToken = async (userId: number, refreshToken: string, expiresAt: Date) => {
     const refreshTokenHash = await bcrypt.hash (refreshToken, 10);
 
+    await deleteRefreshTokensByUserId (userId);
+
     return prisma.refreshToken.create ({
         data: {
-            userId,
-            refreshTokenHash,
-            expiresAt,
+            user_id: userId,
+            refresh_token_hash: refreshTokenHash,
+            expires_at: expiresAt,
         },
     });
 }
@@ -87,16 +89,16 @@ const getJwtSecret = () => {
 
 const deleteRefreshTokensByUserId = async (userId: number) => {
     await prisma.refreshToken.deleteMany ({
-        where: {userId: userId},
+        where: {user_id: userId},
     });
 }
 
-const existsRefreshToken = async (userId: number, refreshToken: string) => {
-    const found = await prisma.refreshToken.findUnique ({where: {userId: userId}});
+const existsRefreshToken = async (userId: number, refreshTokenStr: string) => {
+    const refreshToken = await prisma.refreshToken.findUnique ({where: {user_id: userId}});
 
-    if (!found) throw new Error ("Refresh Token not found.");
+    if (!refreshToken) throw new InvalidTokenException (400, ErrorMessage.REFRESH_TOKEN_NOT_FOUND);
 
-    if (!await bcrypt.compare (refreshToken, found.refreshTokenHash)) throw new Error ("Invalid Refresh Token.");
+    if (!await bcrypt.compare (refreshTokenStr, refreshToken.refresh_token_hash)) throw new InvalidTokenException (400, ErrorMessage.INVALID_REFRESH_TOKEN);
 
     return true;
 }

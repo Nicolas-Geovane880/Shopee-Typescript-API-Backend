@@ -1,9 +1,8 @@
 export const supplierPrices: {[key: string] : number} = {
     "KIT02-20-ACUSTICO": 48,
     "KIT02-40-ACUSTICO": 96,
+    "PILLOW-88-4": 26,
+    "PILLOW-78-4": 24,
+    "KIT04-20-ACUSTICO": 72,
 }
 
-export enum SupplierSKUs {
-    KIT02_20_ACUSTICO = "KIT02-20-ACUSTICO",
-    KIT02_40_ACUSTICO = "KIT02-40-ACUSTICO",
-}

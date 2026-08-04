@@ -18,4 +18,6 @@ export const validateCodeSchema = z.object ({
 
 export type LoginResponseSchema = z.infer <typeof loginResponseSchema>;
 
+export type ValidateCodeSchema = z.infer <typeof validateCodeSchema>;
+
 export type LoginSchema = z.infer <typeof loginSchema>;
