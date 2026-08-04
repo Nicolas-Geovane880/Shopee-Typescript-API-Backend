@@ -4,6 +4,7 @@ import app from "../app.js";
 import prisma from "../utils/prismaInstance.js";
 import { clearDatabase } from "../utils/clearDatabase.js";
 import { generateAccessToken } from "../services/tokenService.js";
+import type { OrderCreateSchema } from "../types/orderSchema.js";
 
 describe ("save", () => {
     beforeEach (async () => {
@@ -18,17 +19,21 @@ describe ("save", () => {
         const user = {
             name: "User test",
             email: "test@gmail.com",
-            passwordHash: "strong-password"
+            password_hash: "strong-password"
         }
 
         const existingUser = await prisma.user.create ({
             data: user
         });
 
+        await prisma.userShopCashInfos.create ({
+            data: {user_id: existingUser.id},
+        })
+
         const accessToken = generateAccessToken (existingUser.id);
 
-        const order = {
-            id_seller: "ABC123",
+        const order: OrderCreateSchema = {
+            idSeller: "ABC123",
             products: [
                 {
                     sku: "KIT02-20-ACUSTICO",
@@ -39,15 +44,18 @@ describe ("save", () => {
                     quantity: 1
                 }
             ],
+            soldDate: "2026-07-20",
         };
 
         const response = await request (app)
             .post ("/orders/")
             .send (order)
             .set ("Authorization", `Bearer ${accessToken.code}`);
+        
+        console.log (response.body)
 
         expect (response.status).toBe (201);
-        expect (response.body).toHaveProperty ("id");
+        expect (response.body).toHaveProperty ("id_seller");
         expect (response.body).toHaveProperty ("products");
     });
 })

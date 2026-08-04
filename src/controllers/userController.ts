@@ -7,6 +7,21 @@ export const me: ExpressParam = async (req, res, next) => {
 
         res.status(200).json (me);
     } catch (error) {
-        next();
+        next(); 
+    }
+}
+
+export const existsByEmail: ExpressParam = async (req, res, next) => {
+    try {
+        const byEmail = await userService.existsByEmail (req.body.email);
+
+
+        if (byEmail) {
+            return res.status (409).send ();
+        }
+
+        return res.status (200).send ();
+    } catch (error) {
+        next (error);
     }
 }

@@ -39,6 +39,34 @@ export const sendLoginCode = async (to: string, code: string) => {
   });
 }
 
+export const sendResetPasswordLink = async (to: string, token: string) => {
+    if (process.env.NODE_ENV === "test") return;
+
+    const mailTranporter = createTransporter ();
+
+    await mailTranporter.sendMail ({
+      from: process.env.EMAIL_FROM,
+      to,
+      subject: "Alterar senha",
+      html: `
+        <div style="font-family: Arial, sans-serif; background-color: #FA5A0A; padding: 10px; border-radius: 5px; margin-bottom: 20px"; color: white>
+          <h2>Shopee Supplier Calculator</h2>
+          <p>Foi solicitado uma alteração de senha por este E-mail:</p>
+          <p>Use o link abaixo para alterar sua senha</p>
+        </div>
+
+        <div style="font-size: 23px; font-weight: bold; letter-spacing: 4px;">
+          <a href="${process.env.FRONTEND_URL}/reset-password?token=${token}">Redefinir senha</a>
+        </div>
+
+        </div style="margin-top: 20px; background-color: #4A4A4A; color: white">
+          <p>O link expira em 10 minutos.</p>
+          <p>Se você não solicitou a alteração da senha, ignore este email.</p>
+        </div>
+      `
+    })
+}
+
 export const generateCode = () => {
   return crypto.randomInt (0, 1000000).toString ().padStart (6, "0");
 }

@@ -10,7 +10,7 @@ export const userResponseSchema = z.object ({
     id: z.number (),
     name: z.string (),
     email: z.email (),
-    createdAt: z.date (),
+    createdAt: z.date ().default (new Date ()),
 });
 
 export type UserCreateSchema = z.infer<typeof userCreateSchema>;

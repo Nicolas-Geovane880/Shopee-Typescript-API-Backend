@@ -4,6 +4,8 @@ import app from "../app.js";
 import prisma from "../utils/prismaInstance.js";
 import { clearDatabase } from "../utils/clearDatabase.js";
 
+const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
+
 describe ("signup", () => {
     beforeEach (async () => {
         await clearDatabase ();
@@ -33,7 +35,7 @@ describe ("signup", () => {
         const savedUser = await prisma.user.findUnique ({ where: {id: response.body.id }});
 
         expect (savedUser).not.toBeNull ();
-        expect (savedUser?.email).toBe ("Usermail@gmail.com");
+        expect (savedUser?.email).toBe ("usermail@gmail.com");
     })
 });
 
@@ -71,7 +73,7 @@ describe ("login", () => {
         expect (response.status).toBe (200);
         expect (response.body).toHaveProperty ("challengeId");
 
-        const challengeId = await prisma.loginChallenge.findFirst ({ where: {userId: existingUserResponse.body.id}});
+        const challengeId = await prisma.loginChallenge.findFirst ({ where: {user_id: existingUserResponse.body.id}});
 
         expect (challengeId).not.toBeNull ();
     }, 15000);

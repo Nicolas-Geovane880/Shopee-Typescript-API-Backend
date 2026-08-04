@@ -1,25 +1,17 @@
-export type LoginChallenge = {
-    expiresAt: Date;
-    id: string;
-    createdAt: Date;
-    userId: number;
-    codeHash: string;
-    attempts: number;
-    consumedAt: Date | null;
-} | ({
+export type LoginChallenge = ({
     user: {
-        id: number;
         name: string;
         email: string;
-        passwordHash: string;
+        id: number;
+        password_hash: string;
     };
 } & {
-    expiresAt: Date;
     id: string;
-    createdAt: Date;
-    userId: number;
-    codeHash: string;
+    code_hash: string;
+    expires_at: Date;
     attempts: number;
-    consumedAt: Date | null;
-});
+    consumed_at: Date | null;
+    created_at: Date;
+    user_id: number;
+}) | null
 

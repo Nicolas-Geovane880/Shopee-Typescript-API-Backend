@@ -1,9 +1,52 @@
-export const supplierPrices: {[key: string] : number} = {
-    "KIT02-20-ACUSTICO": 48,
-    "KIT02-40-ACUSTICO": 96,
-}
+export const supplierPrices: { [key: string]: number } = {
+    "CERVICAL": 23,
+    "ENCOSTO-ESPUMA": 28,
+    "ENCOSTO": 38,
+    "CAPA ENCOSTO": 14,
+    "PROMO": 13,
+    "QUADRADINHO": 20,
+    "XUXAO-MAG": 30,
+    "XUXAO-FLOC": 19,
+    "FRONHA-XUXA": 15,
+    "MATELADO-BRANCO": 12.5,
+    "MATELADO-ESCURO": 12.5,
+    "RAMPA": 38,
+    "RAMPA-BB": 17,
+    "CAMADAS": 50,
 
-export enum SupplierSKUs {
-    KIT02_20_ACUSTICO = "KIT02-20-ACUSTICO",
-    KIT02_40_ACUSTICO = "KIT02-40-ACUSTICO",
-}
+    "D23-88X12-BRANCO": 160,
+    "D23-88X12-PRETO": 160,
+    "D33-88X12-BRANCO": 176,
+    "D33-88X12-PRETO": 176,
+    
+    "BABY-80X40X6": 30,
+    "BABY-80X60X6": 33,
+    "BABY-90X60X7": 35,
+    "BABY-100X70X4": 38,
+
+    "PILLOW-78-4": 24,
+    "PILLOW-88-4": 26,
+    "PILLOW-138-4": 35,
+    "PILLOW-158-4": 43,
+    "PILLOW-78-6": 32,
+    "PILLOW-88-6": 35,
+    "PILLOW-138-6": 39,
+    "PILLOW-158-6": 58,
+
+    "MANTA-1CM": 10,
+    "MANTA-2CM": 16,
+    "MANTA-3CM": 21,
+    "MANTA-4CM": 27,
+    "MANTA-5CM": 32,
+
+    "KIT04-20-ACUSTICO": 72,
+    "KIT06-20-ACUSTICO": 144,
+
+    "KIT02-100-ACUSTICO": 240,
+    "KIT02-80-ACUSTICO": 192,
+    "KIT02-40-ACUSTICO": 96,
+    "KIT02-20-ACUSTICO": 48,
+    "KIT02-12-ACUSTICO": 32,
+    "KIT02-10-ACUSTICO": 28,
+    "KIT02-05-ACUSTICO": 18,
+};
