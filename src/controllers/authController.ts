@@ -4,8 +4,6 @@ import type { ExpressParam } from "../types/express/expressParam.js";
 import { userCreateSchema } from "../types/userSchema.js";
 import { refreshToken } from "../services/tokenService.js";
 
-const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const signup: ExpressParam = async (req, res, next) => {
     try {
         const dto = userCreateSchema.parse (req.body);
@@ -70,9 +68,7 @@ export const isAuthenticated: ExpressParam = async (req, res, next) => {
 }
 
 export const sendForgotPasswordLink: ExpressParam = async (req, res, next) => {
-    try {
-        console.log ("ENVIOU EMAIL PARA: " + req.body.email);
-        
+    try {        
         await authService.sendForgotPasswordLink (req.body.email);
 
         res.status(200).send ();

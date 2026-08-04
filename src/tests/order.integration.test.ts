@@ -52,8 +52,6 @@ describe ("save", () => {
             .send (order)
             .set ("Authorization", `Bearer ${accessToken.code}`);
         
-        console.log (response.body)
-
         expect (response.status).toBe (201);
         expect (response.body).toHaveProperty ("id_seller");
         expect (response.body).toHaveProperty ("products");
