@@ -5,6 +5,7 @@ import orderRouter from "./routes/orderRouters.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import cors from "cors";
+import { createTransporter } from "./services/mailService.js";
 
 const app = express();
 
@@ -30,6 +31,22 @@ app.use ("/auth", authRouter);
 app.use ("/users", userRouter);
 app.use ("/orders", orderRouter);
 app.use ("/home", dashboardRouter);
+app.get("/test-smtp", async (_, res) => {
+  const transporter = createTransporter ();
+
+  try {
+    await transporter.verify();
+
+    res.json({
+      message: "SMTP funcionando"
+    });
+
+  } catch(error) {
+    console.log(error);
+
+    res.status(500).json(error);
+  }
+});
 
 app.use (errorHandler);
 

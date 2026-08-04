@@ -4,15 +4,17 @@ import dns from "dns";
 
 dns.setDefaultResultOrder("ipv4first");
 
-const createTransporter = () => {
+export const createTransporter = () => {
   return nodemailer.createTransport ({
     host: process.env.SMTP_HOST,
-    port: Number (process.env.SMTP_PORT),
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    logger: true,
+    debug: true,
   });
 }
 
