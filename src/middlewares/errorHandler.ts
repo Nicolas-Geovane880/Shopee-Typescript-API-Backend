@@ -1,5 +1,5 @@
 import { InvalidLoginCodeException } from "../exceptions/invalidLoginCodeException.js";
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import type { InvalidTokenException } from "../exceptions/invalidTokenException.js";
 import { ConflictException } from "../exceptions/conflictException.js";
 import { InvalidCredentialsException } from "../exceptions/invalidCredentials.js";
@@ -28,10 +28,10 @@ const errorsMap: {[error: string] : (err: any) => any} = {
     }),
 }
 
-export const errorHandler = (err: Error, req: Request, res: Response) => {
+export const errorHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
     const error = errorsMap[err.constructor.name];
 
-    const errorResponse = error ? error (err) : {status: 500, message: err.message};
+    const errorResponse = error ? error (err) : {status: 500, message: err.message || "Erro no servidor"};
     
     if (errorResponse.status === 500) {
         console.log (errorResponse);
