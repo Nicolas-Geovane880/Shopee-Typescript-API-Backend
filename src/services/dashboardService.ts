@@ -5,7 +5,7 @@ import prisma from '../utils/prismaInstance.js';
 export const getUserDashboard = async (userId: number, date: string) => {
     const ordersPage = await findInInterval (userId, 1, 20, date, false);
 
-    const allOrders = await findOrders (undefined, userId, undefined, false, "all-time");
+    const allOrders = await findOrders (undefined, userId, undefined, false, date);
 
     const totalRevenue = calculateTotalRevenue (allOrders);
     const totalProfit = calculateTotalProfit (allOrders);
