@@ -1,13 +1,15 @@
 import { Decimal } from 'decimal.js'
-import { findInInterval } from "./orderService.js";
+import { findInInterval, findOrders } from "./orderService.js";
 import prisma from '../utils/prismaInstance.js';
 
 export const getUserDashboard = async (userId: number, date: string) => {
     const ordersPage = await findInInterval (userId, 1, 20, date, false);
 
-    const totalRevenue = calculateTotalRevenue (ordersPage.data);
-    const totalProfit = calculateTotalProfit (ordersPage.data);
-    const totalSupplierPrice = calculateTotalSupplierPrice (ordersPage.data);
+    const allOrders = await findOrders (undefined, userId, undefined, false, "all-time");
+
+    const totalRevenue = calculateTotalRevenue (allOrders);
+    const totalProfit = calculateTotalProfit (allOrders);
+    const totalSupplierPrice = calculateTotalSupplierPrice (allOrders);
 
     const userShopCashInfos = await prisma.userShopCashInfos.findUnique ({where: {user_id: userId}});
 
