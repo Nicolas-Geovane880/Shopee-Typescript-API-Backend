@@ -45,7 +45,7 @@ export const findInInterval = async (userId: number,
                                      date: string,
                                      isPaid: boolean) => {
     page = page > 0 ? page : 1;
-    size = size > 0 && size <= 50 ? size : 10;
+    size = size > 0 && size <= 50 ? size : 20;
     const skip = (page - 1) * size;
 
 

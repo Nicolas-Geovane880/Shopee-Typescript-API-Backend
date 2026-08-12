@@ -16,7 +16,7 @@ export const save: ExpressParam = async (req, res, next) => {
 
 export const findInPageable: ExpressParam = async (req, res, next) => {
     try {
-        const response = await orderService.findInInterval (req.user?.userId!, Number (req.params.page), 10, String (req.params.date), false);
+        const response = await orderService.findInInterval (req.user?.userId!, Number (req.params.page), 20, String (req.params.date), false);
 
         res.status(201).json(response);
     } catch (error) {
