@@ -21,7 +21,7 @@ Esta API desenvolvida em TypeScript é responsável pela solução 1.
 A proposta é fornecer ao usuário uma forma **simplificada** de **cadastrar** e **acompanhar** seus pedidos, mantendo o controle sobre os registros e apresentando as principais métricas sem a necessidade de realizar cálculos **manualmente**.
 
 A API responsável pela solução 2 está disponível em outro repositório.
-Repositório: LINK
+Repositório: https://github.com/Nicolas-Geovane880/Shopee-SpringBoot-API-Backend
 
 ### ➜ O que essa API faz?
 
